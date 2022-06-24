@@ -23,14 +23,14 @@ public class Pedido {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(name = "valor_total")
-	private BigDecimal valorTotal;
+	private BigDecimal valorTotal = BigDecimal.ZERO;
 	private LocalDate date = LocalDate.now();
 	@ManyToOne
 	private Cliente cliente;
-	@OneToMany(mappedBy = "pedido",cascade =CascadeType.ALL)
-	//boa pratica inicializar o atributo lista
-	//evita ter que fazer teste para verificar se a colecao esta inicializada. 
-	private List<ItemPedido> intens=new ArrayList<ItemPedido>();
+	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+	// boa pratica inicializar o atributo lista
+	// evita ter que fazer teste para verificar se a colecao esta inicializada.
+	private List<ItemPedido> intens = new ArrayList<ItemPedido>();
 
 	public Pedido() {
 
@@ -40,11 +40,14 @@ public class Pedido {
 
 		this.cliente = cliente;
 	}
-	//metodo para adcionar um item ao pedido
-	//boa pratica visto se tratar de um relacionamento bi direcional.
+
+	// metodo para adcionar um item ao pedido
+	// boa pratica visto se tratar de um relacionamento bi direcional.
 	public void adicionarItem(ItemPedido item) {
 		item.setPedido(this);
 		this.intens.add(item);
+		this.valorTotal = this.valorTotal.add(item.getValor());
+
 	}
 
 	public Long getId() {
