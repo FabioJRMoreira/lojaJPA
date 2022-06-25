@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,11 +26,16 @@ public class Pedido {
 	@Column(name = "valor_total")
 	private BigDecimal valorTotal = BigDecimal.ZERO;
 	private LocalDate date = LocalDate.now();
-	@ManyToOne
+	//quando há toOne (relacionamento) por padrao o jpa cria um join 
+	//isso pode deixar a consulta lenta.
+	//por padrao Eager carrega mesmo sem precisar
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Cliente cliente;
 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
 	// boa pratica inicializar o atributo lista
 	// evita ter que fazer teste para verificar se a colecao esta inicializada.
+	// tomany é carregado apenas se acessar a lista 
+	//tomany por padrao é Lazy carrega se fizer o acesso.
 	private List<ItemPedido> intens = new ArrayList<ItemPedido>();
 
 	public Pedido() {
