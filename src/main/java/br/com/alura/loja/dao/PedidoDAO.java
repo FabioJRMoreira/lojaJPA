@@ -41,5 +41,18 @@ public class PedidoDAO {
 		           + "ORDER BY item.quantidade DESC ";
 		return em.createQuery(jpql.toString(),RelatorioDeVendasVO.class).getResultList();
 	}
+	
+	public Pedido bucarPedidoComCliente(Long id) {
+		//join fetch é usado para carregar um determinado relacionamento
+		//carrega mesmo sendo o relacionamento lazy
+		
+		/*
+		 * O join fetch permite escolher quais relacionamentos serão carregados em determinada consulta, ao invés de sempre os carregar
+		 * */
+		return em.createQuery("SELECT p FROM Pedido p JOIN FETCH p.cliente WHERE p.id= :id",Pedido.class)
+				.setParameter("id", id)
+				.getSingleResult();
+		
+	}
 
 }
