@@ -29,7 +29,7 @@ public class PerformaceConsultas {
 		Pedido pedido = pedidoDao.bucarPedidoComCliente(1l);
 		em.close();
 		
-		System.out.println(pedido.getCliente().getNome());
+		System.out.println(pedido.getCliente().getDadosPessoais().getNome());
 		
 
 	}
